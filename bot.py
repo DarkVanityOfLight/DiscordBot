@@ -51,7 +51,7 @@ async def on_ready():
     print("Bot ready")
 
 
-if __name__ == "__main__":
+def check_files():
     try:
         with open("quotes.txt", 'r') as q:
             pass
@@ -60,5 +60,15 @@ if __name__ == "__main__":
         with open('quotes.txt', 'w+') as q:
             pass
 
+    try:
+        with open("roles.json", 'r') as r:
+            pass
 
+    except FileNotFoundError:
+        with open('roles.josn', 'w+') as r:
+            pass
+
+if __name__ == "__main__":
+
+    check_files()
     bot.run(TOKEN)
