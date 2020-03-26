@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 import datetime
+import json
 
 TOKEN = 'NjkyNDYyMDMzMzk1Nzc3NTY2.Xnu8sQ.nX0UH4jhZrO-nNT9p6gRuCy-I7M'
 bot = commands.Bot(command_prefix='$')
@@ -44,6 +45,24 @@ async def show_quotes(ctx):
         lines = f.readlines()
         line_string = "".join(lines)
         await ctx.send(line_string)
+
+
+@bot.command()
+async def ban(ctx, target):
+    if "Moderator" in ctx.author.roles or discord.ext.commands.has_permissions(administrator=True):
+        id = ctx.message.mentions[0].id
+        user = ctx.guild.get_member(id)
+        roles = user.roles
+        role_dict = {id: [role.id for role in roles[1:]]}
+
+        with open('roles.josn', 'a') as r:
+            r.write(json.dumps(role_dict))
+
+        for role in role_dict[id]:
+            await user.remove_roles([_role for _role in ctx.guild.roles if _role.id == role][0])
+
+        user.add_roles([role for role in ctx.guild.roles if role.id == 690519972123770880][0])
+        await ctx.send("I brought {}, where he belongs".format(user.mention))
 
 
 @bot.event
