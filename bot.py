@@ -53,22 +53,38 @@ async def ban(ctx, target):
         id = ctx.message.mentions[0].id
         user = ctx.guild.get_member(id)
         roles = user.roles
-        role_dict = {id: [role.id for role in roles[1:]]}
+        unremoveable = [635131535997141004, 635129654029713448, 635129654029713448, 635119155414302731]
 
-        with open('roles.josn', 'a') as r:
-            r.write(json.dumps(role_dict))
+        await ctx.message.delete()
 
-        for role in role_dict[id]:
-            await user.remove_roles([_role for _role in ctx.guild.roles if _role.id == role][0])
+        with open('roles.json', 'r') as r:
+            try:
+                data = json.load(r)
+            except json.decoder.JSONDecodeError:
+                data = {}
 
-        user.add_roles([role for role in ctx.guild.roles if role.id == 690519972123770880][0])
+        with open('roles.json', 'w+') as r:
+            data[id] = [role.id for role in roles if role.id not in unremoveable]
+            r.write(json.dumps(data))
+
+        for role in roles:
+            if role.id not in unremoveable:
+                await user.remove_roles(role)
+
+        await user.add_roles([role for role in ctx.guild.roles if role.id == 690519972123770880][0])
         await ctx.send("I brought {}, where he belongs".format(user.mention))
 
+@bot.command()
+async def unban(ctx, target):
+
+    user = ctx.message.mentions[0]
+    r = open('roles.json', 'r')
+    data = json.load(r)
+    for id in
 
 @bot.event
 async def on_ready():
     print("Bot ready")
-
 
 def check_files():
     try:
@@ -84,9 +100,8 @@ def check_files():
             pass
 
     except FileNotFoundError:
-        with open('roles.josn', 'w+') as _:
-            pass
-
+        with open('roles.json', 'w+') as r:
+            r.write(json.dumps({}))
 
 if __name__ == "__main__":
     check_files()
