@@ -1,8 +1,9 @@
+import datetime
+import json
+
 import discord
 from discord.ext import commands
 from discord.utils import get
-import datetime
-import json
 
 TOKEN = 'NjkyNDYyMDMzMzk1Nzc3NTY2.Xnu8sQ.nX0UH4jhZrO-nNT9p6gRuCy-I7M'
 bot = commands.Bot(command_prefix='$')
@@ -50,13 +51,12 @@ async def show_quotes(ctx):
 
 @bot.command()
 async def ban(ctx, target):
+    await ctx.message.delete()
     if "Moderator" in ctx.author.roles or discord.ext.commands.has_permissions(administrator=True):
         user = ctx.message.mentions[0]
         id = user.id
         roles = user.roles
         unremoveable = [635131535997141004, 635129654029713448, 635129654029713448, 635119155414302731]
-
-        await ctx.message.delete()
 
         with open('roles.json', 'r') as r:
             try:
@@ -78,20 +78,22 @@ async def ban(ctx, target):
 
 @bot.command()
 async def unban(ctx, target):
-    user = ctx.message.mentions[0]
-    id = user.id
-    with open('roles.json', 'r') as r:
-        data = json.load(r)
+    await ctx.message.delete()
+    if "Moderator" in ctx.author.roles or discord.ext.commands.has_permissions(administrator=True):
+        user = ctx.message.mentions[0]
+        id = user.id
+        with open('roles.json', 'r') as r:
+            data = json.load(r)
 
-    roles = data[str(id)]
-    for role_id in roles:
-        await user.add_roles(get(ctx.guild.roles, id=role_id))
+        roles = data[str(id)]
+        for role_id in roles:
+            await user.add_roles(get(ctx.guild.roles, id=role_id))
 
-    await user.remove_roles(get(ctx.guild.roles, id=690519972123770880))
+        await user.remove_roles(get(ctx.guild.roles, id=690519972123770880))
 
-    del data[str(id)]
-    with open('roles.json', 'w+') as r:
-        r.write(json.dumps(data))
+        del data[str(id)]
+        with open('roles.json', 'w+') as r:
+            r.write(json.dumps(data))
 
 
 @bot.event
