@@ -1,5 +1,6 @@
 import discord
 from discord.ext import commands
+from discord.utils import get
 import datetime
 import json
 
@@ -50,8 +51,8 @@ async def show_quotes(ctx):
 @bot.command()
 async def ban(ctx, target):
     if "Moderator" in ctx.author.roles or discord.ext.commands.has_permissions(administrator=True):
-        id = ctx.message.mentions[0].id
-        user = ctx.guild.get_member(id)
+        user = ctx.message.mentions[0]
+        id = user.id
         roles = user.roles
         unremoveable = [635131535997141004, 635129654029713448, 635129654029713448, 635119155414302731]
 
@@ -74,17 +75,29 @@ async def ban(ctx, target):
         await user.add_roles([role for role in ctx.guild.roles if role.id == 690519972123770880][0])
         await ctx.send("I brought {}, where he belongs".format(user.mention))
 
+
 @bot.command()
 async def unban(ctx, target):
-
     user = ctx.message.mentions[0]
-    r = open('roles.json', 'r')
-    data = json.load(r)
-    for id in
+    id = user.id
+    with open('roles.json', 'r') as r:
+        data = json.load(r)
+
+    roles = data[str(id)]
+    for role_id in roles:
+        await user.add_roles(get(ctx.guild.roles, id=role_id))
+
+    await user.remove_roles(get(ctx.guild.roles, id=690519972123770880))
+
+    del data[str(id)]
+    with open('roles.json', 'w+') as r:
+        r.write(json.dumps(data))
+
 
 @bot.event
 async def on_ready():
     print("Bot ready")
+
 
 def check_files():
     try:
@@ -102,6 +115,7 @@ def check_files():
     except FileNotFoundError:
         with open('roles.json', 'w+') as r:
             r.write(json.dumps({}))
+
 
 if __name__ == "__main__":
     check_files()
