@@ -13,8 +13,8 @@ with open("secret.txt", 'r') as s:
     TOKEN = lines[0]
     ID = lines[1]
     GOOGLE_TOKEN = lines[2]
-bot = commands.Bot(command_prefix='$')
 
+bot = commands.Bot(command_prefix='$')
 
 
 @bot.command()
@@ -52,6 +52,7 @@ async def wiesel(ctx):
         data[0][1] = num
         with open('google_stuff.json', 'w+') as f:
             f.write(json.dumps(data))
+
     head = {'Accept': 'application/json'}
     r = requests.get(
         'https://customsearch.googleapis.com/customsearch/v1?cx={}&q=weasel&searchType=image&key={}'.format(
@@ -184,6 +185,7 @@ def check_files():
             con = [[datetime.datetime.today().strftime('%d'), 0]]
 
             r.write(json.dumps(con))
+
 
 if __name__ == "__main__":
     check_files()
