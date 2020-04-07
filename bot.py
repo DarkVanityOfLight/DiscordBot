@@ -15,7 +15,7 @@ async def ping(ctx):
 
 
 @bot.command()
-async def wiesel(ctx):
+async def off_wiesel(ctx):
     file = discord.File("wiesel.jpg")
     await ctx.send("", file=file)
 
