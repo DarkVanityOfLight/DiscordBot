@@ -176,15 +176,15 @@ async def on_ready():
 
 def check_files():
     try:
-        with open("quotes.txt", 'r') as _:
+        with open("quotes.txt", 'r'):
             pass
 
     except FileNotFoundError:
-        with open('quotes.txt', 'w+') as _:
+        with open('quotes.txt', 'w+'):
             pass
 
     try:
-        with open("roles.json", 'r') as _:
+        with open("roles.json", 'r'):
             pass
 
     except FileNotFoundError:
@@ -192,13 +192,20 @@ def check_files():
             r.write(json.dumps({}))
 
     try:
-        with open('google_stuff.json', 'r') as _:
+        with open('google_stuff.json', 'r'):
             pass
     except FileNotFoundError:
         with open('google_stuff.json', 'w+') as r:
             con = [[datetime.datetime.today().strftime('%d'), 0]]
-
             r.write(json.dumps(con))
+
+    try:
+        with open('events.json', 'r'):
+            pass
+    except FileNotFoundError:
+        with open('events.json', 'w+') as e:
+            con = []
+            e.write(json.dumps(con))
 
 
 if __name__ == "__main__":
