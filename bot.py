@@ -169,6 +169,22 @@ async def create_event(ctx, name, date, people):
         e.write(json.dumps(data))
 
 
+@bot.command()
+async  def list_events(ctx):
+
+    templ = "{} am {},\nFreie plätze: {},\nErstellt von {}\n\n"
+    full = ""
+
+    with open('events.json', 'r') as e:
+
+        evs = json.load(e)
+
+    for e in evs:
+        full += templ.format(e[0], e[1], e[2], e[3])
+
+    await ctx.send(full)
+
+
 @bot.event
 async def on_ready():
     print("Bot ready")
