@@ -185,6 +185,32 @@ async  def list_events(ctx):
     await ctx.send(full)
 
 
+@bot.command()
+async def signup(ctx, name):
+
+    with open('events.json', 'r') as e:
+        evs = json.load(e)
+
+    for itnum, ev in enumerate(evs):
+
+        if ev[0].lower() == name.lower():
+            role = get(ctx.guild.roles, name=name)
+            if role not in ctx.author.roles:
+                num = int(ev[2])
+                if num - 1 > 0:
+                    num += -1
+                    await ctx.author.add_roles(role)
+                    ev[2] = num
+                    evs[itnum] = ev
+                    with open('events.json', 'w+') as m:
+                        m.write(json.dumps(evs))
+                else:
+                    await ctx.send("Sorry no more places are available")
+            else:
+                await ctx.send("You are already participating at the event")
+
+        else:
+            await ctx.send("The event {} is not available".format(name))
 @bot.event
 async def on_ready():
     print("Bot ready")
