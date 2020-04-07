@@ -40,9 +40,9 @@ async def wiesel(ctx):
         needed[0] = datetime.datetime.today().strftime('%d')
         data[0] = needed
         with open('google_stuff.json', 'w+') as f:
-            f.write(data)
+            f.write(json.dumps(data))
 
-    elif int(data[1]) == 100:
+    elif int(needed[1]) == 100:
         await off_wiesel(ctx)
         return
 
@@ -51,7 +51,7 @@ async def wiesel(ctx):
         num += 1
         data[0][1] = num
         with open('google_stuff.json', 'w+') as f:
-            f.write(data)
+            f.write(json.dumps(data))
     head = {'Accept': 'application/json'}
     r = requests.get(
         'https://customsearch.googleapis.com/customsearch/v1?cx={}&q=weasel&searchType=image&key={}'.format(
