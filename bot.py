@@ -8,7 +8,11 @@ import discord
 from discord.ext import commands
 from discord.utils import get
 
-TOKEN = 'NjkyNDYyMDMzMzk1Nzc3NTY2.Xnu8sQ.nX0UH4jhZrO-nNT9p6gRuCy-I7M'
+with open("secret.txt", 'r') as s:
+    lines = s.readlines()
+    TOKEN = lines[0]
+    ID = lines[1]
+    GOOGLE_TOKEN = lines[2]
 bot = commands.Bot(command_prefix='$')
 
 
