@@ -10,9 +10,9 @@ from discord.utils import get
 
 with open("secret.txt", 'r') as s:
     lines = s.readlines()
-    TOKEN = lines[0]
-    ID = lines[1]
-    GOOGLE_TOKEN = lines[2]
+    TOKEN = lines[0].strip('\n')
+    ID = lines[1].strip('\n')
+    GOOGLE_TOKEN = lines[2].strip('\n')
 
 bot = commands.Bot(command_prefix='$')
 
@@ -155,6 +155,66 @@ async def unban(ctx, _):
             r.write(json.dumps(data))
 
 
+@bot.command()
+async def create_event(ctx, name, date, people):
+
+    await ctx.guild.create_role(name=name)
+    await ctx.author.add_roles(get(ctx.guild.roles, name=name))
+    ev = (name, date, int(people), ctx.author.id)
+
+    with open('events.json', 'r') as d:
+        data = json.load(d)
+
+    data.append(ev)
+
+    with open('events.json', 'w+') as e:
+        e.write(json.dumps(data))
+
+
+@bot.command()
+async def list_events(ctx):
+
+    templ = "{} am {},\nFreie plätze: {},\nErstellt von {}\n\n"
+    full = ""
+
+    with open('events.json', 'r') as e:
+
+        evs = json.load(e)
+
+    for e in evs:
+        full += templ.format(e[0], e[1], e[2], e[3])
+
+    await ctx.send(full)
+
+
+@bot.command()
+async def signup(ctx, name):
+
+    with open('events.json', 'r') as e:
+        evs = json.load(e)
+
+    for itnum, ev in enumerate(evs):
+
+        if ev[0].lower() == name.lower():
+            role = get(ctx.guild.roles, name=name)
+            if role not in ctx.author.roles:
+                num = int(ev[2])
+                if num - 1 > 0:
+                    num += -1
+                    await ctx.author.add_roles(role)
+                    ev[2] = num
+                    evs[itnum] = ev
+                    with open('events.json', 'w+') as m:
+                        m.write(json.dumps(evs))
+                else:
+                    await ctx.send("Sorry no more places are available")
+            else:
+                await ctx.send("You are already participating at the event")
+
+        else:
+            await ctx.send("The event {} is not available".format(name))
+
+
 @bot.event
 async def on_ready():
     print("Bot ready")
@@ -162,15 +222,15 @@ async def on_ready():
 
 def check_files():
     try:
-        with open("quotes.txt", 'r') as _:
+        with open("quotes.txt", 'r'):
             pass
 
     except FileNotFoundError:
-        with open('quotes.txt', 'w+') as _:
+        with open('quotes.txt', 'w+'):
             pass
 
     try:
-        with open("roles.json", 'r') as _:
+        with open("roles.json", 'r'):
             pass
 
     except FileNotFoundError:
@@ -178,13 +238,20 @@ def check_files():
             r.write(json.dumps({}))
 
     try:
-        with open('google_stuff.json', 'r') as _:
+        with open('google_stuff.json', 'r'):
             pass
     except FileNotFoundError:
         with open('google_stuff.json', 'w+') as r:
             con = [[datetime.datetime.today().strftime('%d'), 0]]
-
             r.write(json.dumps(con))
+
+    try:
+        with open('events.json', 'r'):
+            pass
+    except FileNotFoundError:
+        with open('events.json', 'w+') as e:
+            con = []
+            e.write(json.dumps(con))
 
 
 if __name__ == "__main__":
