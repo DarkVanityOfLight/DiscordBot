@@ -172,6 +172,14 @@ def check_files():
         with open('roles.json', 'w+') as r:
             r.write(json.dumps({}))
 
+    try:
+        with open('google_stuff.json', 'r') as _:
+            pass
+    except FileNotFoundError:
+        with open('google_stuff.json', 'w+') as r:
+            con = [[datetime.datetime.today().strftime('%d'), 0]]
+
+            r.write(json.dumps(con))
 
 if __name__ == "__main__":
     check_files()
