@@ -158,7 +158,7 @@ async def unban(ctx, _):
 @bot.command()
 async def create_event(ctx, name, date, people):
 
-    ev = [name, date, people]
+    ev = (name, date, people, ctx.author.id)
 
     with open('events.json', 'r') as d:
         data = json.load(d)
