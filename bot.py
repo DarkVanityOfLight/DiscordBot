@@ -213,6 +213,8 @@ async def signup(ctx, name):
 
         else:
             await ctx.send("The event {} is not available".format(name))
+
+
 @bot.event
 async def on_ready():
     print("Bot ready")
