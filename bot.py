@@ -158,7 +158,9 @@ async def unban(ctx, _):
 @bot.command()
 async def create_event(ctx, name, date, people):
 
-    ev = (name, date, people, ctx.author.id)
+    await ctx.guild.create_role(name=name)
+    await ctx.author.add_roles(get(ctx.guild.roles, name=name))
+    ev = (name, date, int(people), ctx.author.id)
 
     with open('events.json', 'r') as d:
         data = json.load(d)
@@ -170,7 +172,7 @@ async def create_event(ctx, name, date, people):
 
 
 @bot.command()
-async  def list_events(ctx):
+async def list_events(ctx):
 
     templ = "{} am {},\nFreie plätze: {},\nErstellt von {}\n\n"
     full = ""
