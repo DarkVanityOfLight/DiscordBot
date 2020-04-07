@@ -1,12 +1,16 @@
 import datetime
 import json
 
+import requests
+import random
+
 import discord
 from discord.ext import commands
 from discord.utils import get
 
 TOKEN = 'NjkyNDYyMDMzMzk1Nzc3NTY2.Xnu8sQ.nX0UH4jhZrO-nNT9p6gRuCy-I7M'
 bot = commands.Bot(command_prefix='$')
+
 
 
 @bot.command()
@@ -22,10 +26,10 @@ async def off_wiesel(ctx):
 
 @bot.command()
 async def wiesel(ctx):
-
     head = {'Accept': 'application/json'}
-    r = requests.get('https://customsearch.googleapis.com/customsearch/v1?cx={}&q=weasel&searchType=image&key={}'.format(
-        ID, GOOGLE_TOKEN), headers=head)
+    r = requests.get(
+        'https://customsearch.googleapis.com/customsearch/v1?cx={}&q=weasel&searchType=image&key={}'.format(
+            ID, GOOGLE_TOKEN), headers=head)
 
     result = json.loads(r.text)
     items = result['items']
@@ -46,6 +50,9 @@ async def wiesel(ctx):
             pic = discord.File('tmp.{}'.format(ext))
             await ctx.send(file=pic)
             break
+
+
+@bot.command()
 async def quote(ctx, _quote, time=None):
     if time is None:
         time = datetime.datetime.now()
@@ -75,11 +82,11 @@ async def show_quotes(ctx):
 
 
 @bot.command()
-async def ban(ctx, target):
+async def ban(ctx, _):
     await ctx.message.delete()
     if "Moderator" in ctx.author.roles or discord.ext.commands.has_permissions(administrator=True):
         user = ctx.message.mentions[0]
-        id = user.id
+        _id = user.id
         roles = user.roles
         unremoveable = [635131535997141004, 635129654029713448, 635129654029713448, 635119155414302731]
 
@@ -90,7 +97,7 @@ async def ban(ctx, target):
                 data = {}
 
         with open('roles.json', 'w+') as r:
-            data[id] = [role.id for role in roles if role.id not in unremoveable]
+            data[_id] = [role.id for role in roles if role.id not in unremoveable]
             r.write(json.dumps(data))
 
         for role in roles:
@@ -102,21 +109,21 @@ async def ban(ctx, target):
 
 
 @bot.command()
-async def unban(ctx, target):
+async def unban(ctx, _):
     await ctx.message.delete()
     if "Moderator" in ctx.author.roles or discord.ext.commands.has_permissions(administrator=True):
         user = ctx.message.mentions[0]
-        id = user.id
+        _id = user.id
         with open('roles.json', 'r') as r:
             data = json.load(r)
 
-        roles = data[str(id)]
+        roles = data[str(_id)]
         for role_id in roles:
             await user.add_roles(get(ctx.guild.roles, id=role_id))
 
         await user.remove_roles(get(ctx.guild.roles, id=690519972123770880))
 
-        del data[str(id)]
+        del data[str(_id)]
         with open('roles.json', 'w+') as r:
             r.write(json.dumps(data))
 
