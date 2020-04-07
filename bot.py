@@ -155,6 +155,20 @@ async def unban(ctx, _):
             r.write(json.dumps(data))
 
 
+@bot.command()
+async def create_event(ctx, name, date, people):
+
+    ev = [name, date, people]
+
+    with open('events.json', 'r') as d:
+        data = json.load(d)
+
+    data.append(ev)
+
+    with open('events.json', 'w+') as e:
+        e.write(data)
+
+
 @bot.event
 async def on_ready():
     print("Bot ready")
