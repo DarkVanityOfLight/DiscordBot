@@ -166,7 +166,7 @@ async def create_event(ctx, name, date, people):
     data.append(ev)
 
     with open('events.json', 'w+') as e:
-        e.write(data)
+        e.write(json.dumps(data))
 
 
 @bot.event
