@@ -21,6 +21,31 @@ async def off_wiesel(ctx):
 
 
 @bot.command()
+async def wiesel(ctx):
+
+    head = {'Accept': 'application/json'}
+    r = requests.get('https://customsearch.googleapis.com/customsearch/v1?cx={}&q=weasel&searchType=image&key={}'.format(
+        ID, GOOGLE_TOKEN), headers=head)
+
+    result = json.loads(r.text)
+    items = result['items']
+
+    chosen = items[random.randint(0, len(items) - 1)]
+    link = chosen['link']
+    r = requests.get(link)
+
+    for key in r.headers.keys():
+
+        if key.lower() == 'content-type':
+            ext = r.headers[key]
+            ext = ext.split('/')[1]
+
+            with open('tmp.{}'.format(ext), 'wb') as p:
+                p.write(r.content)
+
+            pic = discord.File('tmp.{}'.format(ext))
+            await ctx.send(file=pic)
+            break
 async def quote(ctx, _quote, time=None):
     if time is None:
         time = datetime.datetime.now()
