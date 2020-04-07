@@ -10,9 +10,9 @@ from discord.utils import get
 
 with open("secret.txt", 'r') as s:
     lines = s.readlines()
-    TOKEN = lines[0]
-    ID = lines[1]
-    GOOGLE_TOKEN = lines[2]
+    TOKEN = lines[0].strip('\n')
+    ID = lines[1].strip('\n')
+    GOOGLE_TOKEN = lines[2].strip('\n')
 
 bot = commands.Bot(command_prefix='$')
 
