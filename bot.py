@@ -26,6 +26,28 @@ async def off_wiesel(ctx):
 
 @bot.command()
 async def wiesel(ctx):
+
+    with open('google_stuff.json', 'r') as f:
+        data = json.load(f)
+
+    needed = data[0]
+    if needed[0] != datetime.datetime.today().strftime('%d'):
+        needed[1] = 0
+        needed[0] = datetime.datetime.today().strftime('%d')
+        data[0] = needed
+        with open('google_stuff.json', 'w+') as f:
+            f.write(data)
+
+    elif int(data[1]) == 100:
+        await off_wiesel(ctx)
+        return
+
+    else:
+        num = int(data[0][1])
+        num += 1
+        data[0][1] = num
+        with open('google_stuff.json', 'w+') as f:
+            f.write(data)
     head = {'Accept': 'application/json'}
     r = requests.get(
         'https://customsearch.googleapis.com/customsearch/v1?cx={}&q=weasel&searchType=image&key={}'.format(
