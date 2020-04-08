@@ -4,6 +4,8 @@ import json
 import requests
 import random
 
+import asyncio
+
 import discord
 from discord.ext import commands
 from discord.utils import get
@@ -254,6 +256,12 @@ def check_files():
             e.write(json.dumps(con))
 
 
+async def loop():
+    while True:
+        print("Running")
+        await asyncio.sleep(60)
+
 if __name__ == "__main__":
     check_files()
+    bot.loop.create_task(loop())
     bot.run(TOKEN)
