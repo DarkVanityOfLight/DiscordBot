@@ -221,7 +221,7 @@ async def end_event(ctx, name):
     for event in data:
         if event[0].lower() == name.lower():
             if event[3] == ctx.author:
-                delete_event()
+                delete_event(name)
 
 
 @bot.event
@@ -262,8 +262,16 @@ def check_files():
             con = []
             e.write(json.dumps(con))
 
-def delete_event():
-    pass
+
+def delete_event(name):
+
+    with open('events.json', 'r') as e:
+        data = json.load(e)
+
+    data = [event for event in data if event[0] is not name]
+
+    with open('events.json', 'w+') as e:
+        e.write(json.dumps(data))
 
 
 async def loop():
