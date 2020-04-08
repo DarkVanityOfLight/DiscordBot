@@ -1,9 +1,8 @@
 import datetime
 import json
-
-import requests
 import random
 
+import requests
 import asyncio
 
 import discord
