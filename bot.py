@@ -211,6 +211,17 @@ async def signup(ctx, name):
         else:
             await ctx.send("The event {} is not available".format(name))
 
+@bot.command()
+async def end_event(ctx, name):
+
+    with open('events.json', 'r') as e:
+        data = json.load(e)
+
+    for event in data:
+        if event[0].lower() == name.lower():
+            if event[3] == ctx.author:
+                pass
+
 
 @bot.event
 async def on_ready():
