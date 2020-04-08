@@ -211,6 +211,7 @@ async def signup(ctx, name):
         else:
             await ctx.send("The event {} is not available".format(name))
 
+
 @bot.command()
 async def end_event(ctx, name):
 
@@ -220,7 +221,7 @@ async def end_event(ctx, name):
     for event in data:
         if event[0].lower() == name.lower():
             if event[3] == ctx.author:
-                pass
+                delete_event()
 
 
 @bot.event
@@ -260,6 +261,9 @@ def check_files():
         with open('events.json', 'w+') as e:
             con = []
             e.write(json.dumps(con))
+
+def delete_event():
+    pass
 
 
 async def loop():
