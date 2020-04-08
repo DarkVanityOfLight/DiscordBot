@@ -103,8 +103,8 @@ async def clear(ctx, amount=100):
 @bot.command()
 async def show_quotes(ctx):
     with open('quotes.txt') as f:
-        lines = f.readlines()
-        line_string = "".join(lines)
+        _lines = f.readlines()
+        line_string = "".join(_lines)
         await ctx.send(line_string)
 
 
