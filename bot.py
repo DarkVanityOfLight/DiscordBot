@@ -31,7 +31,6 @@ async def off_wiesel(ctx):
 
 @bot.command()
 async def wiesel(ctx):
-
     with open('google_stuff.json', 'r') as f:
         data = json.load(f)
 
@@ -158,7 +157,6 @@ async def unban(ctx, _):
 
 @bot.command()
 async def create_event(ctx, name, date, people):
-
     await ctx.guild.create_role(name=name)
     await ctx.author.add_roles(get(ctx.guild.roles, name=name))
     ev = (name, date, int(people), ctx.author.id, ctx.guild.id, ctx.channel.id)
@@ -174,23 +172,21 @@ async def create_event(ctx, name, date, people):
 
 @bot.command()
 async def list_events(ctx):
-
     templ = "{} am {},\nFreie plätze: {},\nErstellt von {}\n\n"
     full = ""
 
     with open('events.json', 'r') as e:
-
         evs = json.load(e)
 
     for e in evs:
-        full += templ.format(e[0], e[1], e[2], e[3])
+        user = get(ctx.guild.members, id=e[3])
+        full += templ.format(e[0], e[1], e[2], user)
 
     await ctx.send(full)
 
 
 @bot.command()
 async def signup(ctx, name):
-
     with open('events.json', 'r') as e:
         evs = json.load(e)
 
@@ -256,6 +252,7 @@ def check_files():
 
 
 async def loop():
+    await asyncio.sleep(5)
     while True:
         now = datetime.datetime.now()
         with open('events.json', 'r') as e:
@@ -266,9 +263,10 @@ async def loop():
                 guild = bot.get_guild(ev[4])
                 channel = get(guild.channels, id=ev[5])
                 role = get(guild.roles, name=ev[0])
-                channel.send('{} The event {} starts now'.format(role.mention, ev[0]))
+                await channel.send('{} The event {} starts now'.format(role.mention, ev[0]))
 
-        await asyncio.sleep(60*60*60*0.5)
+        await asyncio.sleep(60 * 60 * 60 * 0.5)
+
 
 if __name__ == "__main__":
     check_files()
