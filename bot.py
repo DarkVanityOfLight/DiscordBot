@@ -161,7 +161,7 @@ async def create_event(ctx, name, date, people):
 
     await ctx.guild.create_role(name=name)
     await ctx.author.add_roles(get(ctx.guild.roles, name=name))
-    ev = (name, date, int(people), ctx.author.id)
+    ev = (name, date, int(people), ctx.author.id, ctx.guild.id, ctx.channel.id)
 
     with open('events.json', 'r') as d:
         data = json.load(d)
