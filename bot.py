@@ -20,7 +20,7 @@ bot = commands.Bot(command_prefix='$')
 
 @bot.command()
 async def ping(ctx):
-    await ctx.send("Pong!!")
+    await ctx.send("Pong!!, the test data is {}".format(ctx.author))
 
 
 @bot.command()
