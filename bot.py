@@ -222,6 +222,7 @@ async def end_event(ctx, name):
         if event[0].lower() == name.lower():
             if event[3] == ctx.author:
                 _delete_event(name)
+                await bot.delete_role(get(ctx.guild.roles, name=name))
 
 
 @bot.event
