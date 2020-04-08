@@ -257,8 +257,18 @@ def check_files():
 
 async def loop():
     while True:
-        print("Running")
-        await asyncio.sleep(60)
+        now = datetime.datetime.now()
+        with open('events.json', 'r') as e:
+            data = json.load(e)
+
+        for ev in data:
+            if datetime.datetime.strptime(ev[1], '%d-%m-%y/%H') <= now:
+                guild = bot.get_guild(ev[4])
+                channel = get(guild.channels, id=ev[5])
+                role = get(guild.roles, name=ev[0])
+                channel.send('{} The event {} starts now'.format(role.mention, ev[0]))
+
+        await asyncio.sleep(60*60*60*0.5)
 
 if __name__ == "__main__":
     check_files()
