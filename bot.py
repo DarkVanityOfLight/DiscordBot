@@ -214,15 +214,14 @@ async def signup(ctx, name):
 
 @bot.command()
 async def end_event(ctx, name):
-
     with open('events.json', 'r') as e:
         data = json.load(e)
 
     for event in data:
         if event[0].lower() == name.lower():
-            if event[3] == ctx.author:
+            if event[3] == ctx.author.id:
                 _delete_event(name)
-                await bot.delete_role(get(ctx.guild.roles, name=name))
+                await get(ctx.guild.roles, name=name).delete()
 
 
 @bot.event
@@ -265,14 +264,13 @@ def check_files():
 
 
 def _delete_event(name):
-
     with open('events.json', 'r') as e:
         data = json.load(e)
 
-    data = [event for event in data if event[0] is not name]
+    new_data = [event for event in data if event[0] != name]
 
     with open('events.json', 'w+') as e:
-        e.write(json.dumps(data))
+        e.write(json.dumps(new_data))
 
 
 async def loop():
