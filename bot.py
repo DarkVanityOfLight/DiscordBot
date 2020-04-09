@@ -10,9 +10,9 @@ import discord
 from discord.ext import commands
 from discord.utils import get
 
-TOKEN = os.environ(['DISCORD_TOKEN'])
-ID = os.environ(['GOOGLE_CSE_ID'])
-GOOGLE_TOKEN = os.environ(['GOOGLE_TOKEN'])
+TOKEN = os.environ['DISCORD_TOKEN']
+ID = os.environ['GOOGLE_CSE_ID']
+GOOGLE_TOKEN = os.environ['GOOGLE_TOKEN']
 
 bot = commands.Bot(command_prefix='$')
 
