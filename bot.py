@@ -1,6 +1,7 @@
 import datetime
 import json
 import random
+import os
 
 import requests
 import asyncio
@@ -9,11 +10,9 @@ import discord
 from discord.ext import commands
 from discord.utils import get
 
-with open("secret.txt", 'r') as s:
-    lines = s.readlines()
-    TOKEN = lines[0].strip('\n')
-    ID = lines[1].strip('\n')
-    GOOGLE_TOKEN = lines[2].strip('\n')
+TOKEN = os.getenv('DISCORD_TOKE')
+ID = os.getenv('GOOGLE_CSE_ID')
+GOOGLE_TOKEN = os.getenv('GOOGLE_TOKEN')
 
 bot = commands.Bot(command_prefix='$')
 
