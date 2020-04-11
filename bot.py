@@ -181,8 +181,8 @@ async def list_events(ctx):
     for e in evs:
         user = get(ctx.guild.members, id=e[3])
         full += templ.format(e[0], e[1], e[2], user)
-
-    await ctx.send(full)
+    if len(full) > 0:
+        await ctx.send(full)
 
 
 @bot.command()
