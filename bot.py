@@ -1,3 +1,4 @@
+# Imports
 import datetime
 import json
 import random
@@ -9,6 +10,7 @@ import discord
 from discord.ext import commands
 from discord.utils import get
 
+# Security
 with open("secret.txt", 'r') as s:
     lines = s.readlines()
     TOKEN = lines[0].strip('\n')
@@ -18,6 +20,7 @@ with open("secret.txt", 'r') as s:
 bot = commands.Bot(command_prefix='$')
 
 
+# Commands
 @bot.command()
 async def ping(ctx):
     await ctx.send("Pong!!, the test data is {}".format(ctx.author))
@@ -228,11 +231,21 @@ async def end_event(ctx, name):
                 await get(ctx.guild.roles, name=name).delete()
 
 
+# Events
 @bot.event
 async def on_ready():
     print("Bot ready")
 
 
+@bot.event()
+async def on_command_error(error, ctx):
+    if isinstance(error, commands.CommandNotFound):
+        await ctx.send("No such command")
+    else:
+        raise error
+
+
+# Helper functions
 def check_files():
     try:
         with open("quotes.txt", 'r'):
