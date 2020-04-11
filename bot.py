@@ -1,3 +1,4 @@
+# Imports
 import datetime
 import json
 import random
@@ -10,13 +11,14 @@ import discord
 from discord.ext import commands
 from discord.utils import get
 
+# Security
 TOKEN = os.environ(['DISCORD_TOKE'])
 ID = os.environ(['GOOGLE_CSE_ID]')
 GOOGLE_TOKEN = os.environ(['GOOGLE_TOKEN'])
 
 bot = commands.Bot(command_prefix='$')
 
-
+# Commands
 @bot.command()
 async def ping(ctx):
     await ctx.send("Pong!!, the test data is {}".format(ctx.author))
@@ -181,7 +183,11 @@ async def list_events(ctx):
         user = get(ctx.guild.members, id=e[3])
         full += templ.format(e[0], e[1], e[2], user)
 
-    await ctx.send(full)
+    if len(full) > 0:
+        await ctx.send(full)
+
+    else:
+        await ctx.send("No events are available, create one using $create_event <name> <date> <number of people>")
 
 
 @bot.command()
@@ -223,11 +229,21 @@ async def end_event(ctx, name):
                 await get(ctx.guild.roles, name=name).delete()
 
 
+# Events
 @bot.event
 async def on_ready():
     print("Bot ready")
 
 
+@bot.event()
+async def on_command_error(error, ctx):
+    if isinstance(error, commands.CommandNotFound):
+        await ctx.send("No such command")
+    else:
+        raise error
+
+
+# Helper functions
 def check_files():
     try:
         with open("quotes.txt", 'r'):
