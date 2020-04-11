@@ -181,8 +181,12 @@ async def list_events(ctx):
     for e in evs:
         user = get(ctx.guild.members, id=e[3])
         full += templ.format(e[0], e[1], e[2], user)
+
     if len(full) > 0:
         await ctx.send(full)
+
+    else:
+        await ctx.send("No events are available, create one using $create_event <name> <date> <number of people>")
 
 
 @bot.command()
