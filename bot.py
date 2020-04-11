@@ -11,12 +11,12 @@ import discord
 from discord.ext import commands
 from discord.utils import get
 
-# Security
-TOKEN = os.environ(['DISCORD_TOKE'])
-ID = os.environ(['GOOGLE_CSE_ID]')
-GOOGLE_TOKEN = os.environ(['GOOGLE_TOKEN'])
+TOKEN = os.environ['DISCORD_TOKEN']
+ID = os.environ['GOOGLE_CSE_ID']
+GOOGLE_TOKEN = os.environ['GOOGLE_TOKEN']
 
 bot = commands.Bot(command_prefix='$')
+
 
 # Commands
 @bot.command()
@@ -235,7 +235,7 @@ async def on_ready():
     print("Bot ready")
 
 
-@bot.event()
+@bot.event
 async def on_command_error(error, ctx):
     if isinstance(error, commands.CommandNotFound):
         await ctx.send("No such command")
