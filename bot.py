@@ -226,7 +226,7 @@ async def end_event(ctx, name):
 @bot.command()
 async def loli(ctx, category=None):
     base_url = "https://api.lolis.life/"
-    valid_categorys = ['neko, kawaii, pat']
+    valid_categorys = ['neko', 'kawaii', 'pat']
     if category is None:
         url = base_url + 'random'
         resp = requests.get(url)
