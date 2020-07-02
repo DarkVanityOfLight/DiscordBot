@@ -242,7 +242,7 @@ async def loli(ctx, category=None):
     resp = json.loads(resp.content)
 
     if resp['success']:
-        emb = discord.Embed(title="Here a picture of a {} loli.".format(resp['categories'].join(',')), url=resp['url'])
+        emb = discord.Embed(title="Here a picture of a {} loli.".format(", ".join(resp['categories']), url=resp['url']))
         ctx.send(emb)
     else:
         ctx.send("An error occurred please contact the developer")
