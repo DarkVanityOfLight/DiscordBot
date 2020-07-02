@@ -223,6 +223,32 @@ async def end_event(ctx, name):
                 _delete_event(name)
                 await get(ctx.guild.roles, name=name).delete()
 
+@bot.command()
+async def loli(ctx, category=None):
+    base_url = "https://api.lolis.life/"
+    valid_categorys = ['neko', 'kawaii', 'pat']
+    if category is None:
+        url = base_url + 'random'
+        resp = requests.get(url)
+
+    elif category.lower() in valid_categorys:
+        url = base_url + category.lower()
+        resp = requests.get(url)
+    else:
+        await ctx.send("The category {} does not exist. Please choose from Neko, Kawaii or pat".format(category))
+        return
+
+
+    resp = json.loads(resp.content)
+
+    if resp['success']:
+        emb = discord.Embed(title="Here a picture of a {} loli.".format(", ".join(resp['categories'])))
+        emb.set_image(url=resp["url"])
+        await ctx.send(embed=emb)
+    else:
+        await ctx.send("An error occurred please contact the developer")
+
+
 
 @bot.event
 async def on_ready():
