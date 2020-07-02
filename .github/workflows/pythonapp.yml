@@ -25,9 +25,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install pipenv
         pipenv install
+	pipenv install pylint
+	pipenv install pytest
     - name: Lint with PyLint
       run: 
-        pipenv install pylint
         pipenv run pylint bot.py
     - name: Test with pytest
       run: |
