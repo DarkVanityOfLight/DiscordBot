@@ -224,18 +224,20 @@ async def end_event(ctx, name):
                 await get(ctx.guild.roles, name=name).delete()
 
 @bot.command()
-async def loli(ctx, category):
+async def loli(ctx, category=None):
     base_url = "https://api.lolis.life/"
     valid_categorys = ['neko, kawaii, pat']
-    if category.lower() in valid_categorys:
-        url = base_url + category.lower()
-        resp = requests.get(url)
-    elif category is not None and category not in valid_categorys:
-        await ctx.send("The category {} does not exist. Please choose from Neko, Kawaii or pat".format(category))
-        return
-    else:
+    if category is None:
         url = base_url + 'random'
         resp = requests.get(url)
+
+    elif category.lower() in valid_categorys:
+        url = base_url + category.lower()
+        resp = requests.get(url)
+    else:
+        await ctx.send("The category {} does not exist. Please choose from Neko, Kawaii or pat".format(category))
+        return
+
 
     resp = json.loads(resp)
 
