@@ -16,7 +16,7 @@ with open("secret.txt", 'r') as s:
     GOOGLE_TOKEN = lines[2].strip('\n')
 
 bot = commands.Bot(command_prefix='$')
-
+bot.remove_command("help")
 
 @bot.command()
 async def ping(ctx):
@@ -249,6 +249,18 @@ async def loli(ctx, category=None):
         await ctx.send("An error occurred please contact the developer")
 
 
+@bot.command()
+async def help(ctx, command=None):
+
+    commands = ["ping", "off_wiesel", "wiesel", "quote", "clear", "show_quotes", "ban", "unban", "create_event", "signup", "list_events", "end_event", "loli", "help"]
+
+    emb = discord.Embed(title="Help", description="This is the help menu of Lolimaid2000")
+
+
+    if command is None:
+        emb.add_field(name="These are all commands available, to see closer info to one command use:\n $help <command>", value='\n'.join(commands))
+
+    await ctx.send(embed= emb)
 
 @bot.event
 async def on_ready():
