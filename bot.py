@@ -252,15 +252,22 @@ async def loli(ctx, category=None):
 @bot.command()
 async def help(ctx, command=None):
 
-    commands = ["ping", "off_wiesel", "wiesel", "quote", "clear", "show_quotes", "ban", "unban", "create_event", "signup", "list_events", "end_event", "loli", "help"]
+    with open("help.json", 'r') as f:
+        help = json.load(f)
+
 
     emb = discord.Embed(title="Help", description="This is the help menu of Lolimaid2000")
 
 
     if command is None:
-        emb.add_field(name="These are all commands available, to see closer info to one command use:\n $help <command>", value='\n'.join(commands))
+        emb.add_field(name="These are all commands available, to see closer info to one command use:\n $help <command>", value='\n'.join(help.keys()))
+    elif command in help.keys():
+        emb.add_field(name=command + ":\n", value=help[command])
 
-    await ctx.send(embed= emb)
+    else:
+        emb.add_field(name="Error command {} not found!".format(command), value="Try one of these instead {}".format('\n'.join(help.keys())))
+
+    await ctx.send(embed=emb)
 
 @bot.event
 async def on_ready():
