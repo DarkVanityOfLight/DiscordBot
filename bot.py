@@ -16,7 +16,7 @@ ID = os.environ['GOOGLE_CSE_ID']
 GOOGLE_TOKEN = os.environ['GOOGLE_TOKEN']
 
 bot = commands.Bot(command_prefix='$')
-
+bot.remove_command("help")
 
 # Commands
 @bot.command()
@@ -228,6 +228,51 @@ async def end_event(ctx, name):
                 _delete_event(name)
                 await get(ctx.guild.roles, name=name).delete()
 
+@bot.command()
+async def loli(ctx, category=None):
+    base_url = "https://api.lolis.life/"
+    valid_categorys = ['neko', 'kawaii', 'pat']
+    if category is None:
+        url = base_url + 'random'
+        resp = requests.get(url)
+
+    elif category.lower() in valid_categorys:
+        url = base_url + category.lower()
+        resp = requests.get(url)
+    else:
+        await ctx.send("The category {} does not exist. Please choose from Neko, Kawaii or pat".format(category))
+        return
+
+
+    resp = json.loads(resp.content)
+
+    if resp['success']:
+        emb = discord.Embed(title="Here a picture of a {} loli.".format(", ".join(resp['categories'])))
+        emb.set_image(url=resp["url"])
+        await ctx.send(embed=emb)
+    else:
+        await ctx.send("An error occurred please contact the developer")
+
+
+@bot.command()
+async def help(ctx, command=None):
+
+    with open("help.json", 'r') as f:
+        help = json.load(f)
+
+
+    emb = discord.Embed(title="Help", description="This is the help menu of Lolimaid2000")
+
+
+    if command is None:
+        emb.add_field(name="These are all commands available, to see closer info to one command use:\n $help <command>", value='\n'.join(help.keys()))
+    elif command in help.keys():
+        emb.add_field(name=command + ":\n", value=help[command])
+
+    else:
+        emb.add_field(name="Error command {} not found!".format(command), value="Try one of these instead {}".format('\n'.join(help.keys())))
+
+    await ctx.send(embed=emb)
 
 # Events
 @bot.event

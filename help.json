@@ -1,0 +1,16 @@
+{
+"ping": "Ping the bot, it will answere with pong if everything is alright!",
+"off_wiesel":"Sends a previous stored weasel picture, use this if the maximum numbers of api queries is reached.",
+ "wiesel":"Sends a picture of a weasel into the channel, the picture is randomly taken from google images.",
+ "quote":"Quote a person, quotes will be stored with name and date.",
+ "clear":"Clear 500 messages from the current channel.",
+ "show_quotes":"List all stored quotes.",
+ "ban":"Ban a user, all his roles will be taken away he will get a worker role and the only channel he can access is the Gulag.",
+ "unban":"Unban a user, he will get all his previous roles back.",
+ "create_event":"Create a public event people will be abel to signup for it, they will get pinged in a maximum timespan of 30 min after the start of the event.",
+ "signup":"Signup for an event, you will get pinged if it starts.",
+ "list_events":"List all available events",
+ "end_event":"End an ongoing event",
+ "loli":"Searchs for a random loli picture (sfw)",
+ "help":"Displays the help message"
+}
