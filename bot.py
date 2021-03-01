@@ -9,6 +9,8 @@ import discord
 from discord.ext import commands
 from discord.utils import get
 
+antimario = False
+
 with open("secret.txt", 'r') as s:
     lines = s.readlines()
     TOKEN = lines[0].strip('\n')
@@ -17,6 +19,13 @@ with open("secret.txt", 'r') as s:
 
 bot = commands.Bot(command_prefix='$')
 bot.remove_command("help")
+
+
+@bot.command()
+async def antimario(ctx):
+    global antimario
+    antimario = not antimario
+    await ctx.send("Mario is {}".format(["disabled" if antimario else "enabled"][0]))
 
 
 @bot.command()
