@@ -15,10 +15,23 @@ TOKEN = os.environ['DISCORD_TOKEN']
 ID = os.environ['GOOGLE_CSE_ID']
 GOOGLE_TOKEN = os.environ['GOOGLE_TOKEN']
 
+anti_mario = False
+mario_id = 262718257461592064
+
 bot = commands.Bot(command_prefix='$')
 bot.remove_command("help")
 
 # Commands
+
+@bot.command()
+async def antimario(ctx):
+    global anti_mario
+    if ctx.author.id == mario_id:
+        await ctx.author.send("Lass das, boese, aus, schluss!!!")
+    anti_mario = not anti_mario
+    await ctx.send("Mario is {}".format(["disabled" if anti_mario else "enabled"][0]))
+
+
 @bot.command()
 async def ping(ctx):
     await ctx.send("Pong!!, the test data is {}".format(ctx.author))
@@ -228,6 +241,7 @@ async def end_event(ctx, name):
                 _delete_event(name)
                 await get(ctx.guild.roles, name=name).delete()
 
+
 @bot.command()
 async def loli(ctx, category=None):
     base_url = "https://api.lolis.life/"
@@ -243,7 +257,6 @@ async def loli(ctx, category=None):
         await ctx.send("The category {} does not exist. Please choose from Neko, Kawaii or pat".format(category))
         return
 
-
     resp = json.loads(resp.content)
 
     if resp['success']:
@@ -256,21 +269,20 @@ async def loli(ctx, category=None):
 
 @bot.command()
 async def help(ctx, command=None):
-
     with open("help.json", 'r') as f:
         help = json.load(f)
 
-
     emb = discord.Embed(title="Help", description="This is the help menu of Lolimaid2000")
 
-
     if command is None:
-        emb.add_field(name="These are all commands available, to see closer info to one command use:\n $help <command>", value='\n'.join(help.keys()))
+        emb.add_field(name="These are all commands available, to see closer info to one command use:\n $help <command>",
+                      value='\n'.join(help.keys()))
     elif command in help.keys():
         emb.add_field(name=command + ":\n", value=help[command])
 
     else:
-        emb.add_field(name="Error command {} not found!".format(command), value="Try one of these instead {}".format('\n'.join(help.keys())))
+        emb.add_field(name="Error command {} not found!".format(command),
+                      value="Try one of these instead {}".format('\n'.join(help.keys())))
 
     await ctx.send(embed=emb)
 
@@ -278,6 +290,14 @@ async def help(ctx, command=None):
 @bot.event
 async def on_ready():
     print("Bot ready")
+
+@bot.event
+async def on_message(message):
+    global anti_mario
+    if anti_mario and message.author.id == mario_id:
+        await message.delete()
+    else:
+        await bot.process_commands(message)
 
 
 @bot.event
