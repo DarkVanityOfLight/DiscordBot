@@ -9,6 +9,7 @@ verify_ssl = true
 discord-py = "*"
 requests = "*"
 "discord.py" = "*"
+typing-extensions = "*"
 
 [requires]
 python_version = "3.9"
