@@ -9,7 +9,8 @@ import discord
 from discord.ext import commands
 from discord.utils import get
 
-antimario = False
+anti_mario = False
+mario_id = 262718257461592064
 
 with open("secret.txt", 'r') as s:
     lines = s.readlines()
@@ -23,9 +24,11 @@ bot.remove_command("help")
 
 @bot.command()
 async def antimario(ctx):
-    global antimario
-    antimario = not antimario
-    await ctx.send("Mario is {}".format(["disabled" if antimario else "enabled"][0]))
+    global anti_mario
+    if ctx.author.id == mario_id:
+        await ctx.author.send("Lass das, boese, aus, schluss!!!")
+    anti_mario = not anti_mario
+    await ctx.send("Mario is {}".format(["disabled" if anti_mario else "enabled"][0]))
 
 
 @bot.command()
