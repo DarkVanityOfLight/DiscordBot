@@ -286,6 +286,14 @@ async def help(ctx, command=None):
 async def on_ready():
     print("Bot ready")
 
+@bot.event
+async def on_message(message):
+    global anti_mario
+    if anti_mario and message.author.id == mario_id:
+        await message.delete()
+    else:
+        await bot.process_commands(message)
+
 
 def check_files():
     try:
