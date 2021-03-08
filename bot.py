@@ -342,6 +342,14 @@ def check_files():
             con = []
             e.write(json.dumps(con))
 
+    try:
+        with open("sport.json", 'r'):
+            pass
+
+    except FileNotFoundError:
+        with open('sport.json', 'w+'):
+            pass
+
 
 def _delete_event(name):
     with open('events.json', 'r') as e:
