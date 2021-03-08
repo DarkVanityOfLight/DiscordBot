@@ -282,9 +282,23 @@ async def help(ctx, command=None):
     await ctx.send(embed=emb)
 
 
+@bot.command
+def setup_sport(ctx):
+    with open("sport.json", "r") as f:
+        sport = json.load(f)
+
+    role = await ctx.guild.create_role(name="Sport", mentionable=True)
+
+    sport[ctx.guild.id] = [ctx.channel.id, role.id]
+
+    with open("sport.json", "w") as f:
+        json.dump(sport, f)
+
+
 @bot.event
 async def on_ready():
     print("Bot ready")
+
 
 @bot.event
 async def on_message(message):
@@ -353,7 +367,17 @@ async def loop():
                 role = get(guild.roles, name=ev[0])
                 await channel.send('{} The event {} starts now'.format(role.mention, ev[0]))
 
-        await asyncio.sleep(60 * 60 * 60 * 0.5)
+        if (now.hour == 19 and now.minute <= 6) or now.hour == 18 and now.minute >= 54:
+            with open("sport.json", "r") as f:
+                sport = json.load(f)
+
+                for guild_id in sport.keys():
+                    guild = bot.get_guild(guild_id)
+                    channel = guild.get_channel(sport[guild_id][0])
+                    role = guild.get_role(sport[guild_id][1])
+                    await channel.send("{} Hyper Hyper!!".format(role.mention))
+
+        await asyncio.sleep(60 * 60 * 5)
 
 
 if __name__ == "__main__":
