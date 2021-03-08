@@ -283,7 +283,7 @@ async def help(ctx, command=None):
 
 
 @bot.command
-def setup_sport(ctx):
+async def setup_sport(ctx):
     with open("sport.json", "r") as f:
         sport = json.load(f)
 
@@ -293,6 +293,8 @@ def setup_sport(ctx):
 
     with open("sport.json", "w") as f:
         json.dump(sport, f)
+
+    await ctx.channel.send("I created the role {} for u good luck".format(role.mention))
 
 
 @bot.event
