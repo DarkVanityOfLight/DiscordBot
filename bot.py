@@ -364,8 +364,9 @@ def check_files():
             pass
 
     except FileNotFoundError:
-        with open('sport.json', 'w+'):
-            pass
+        with open('sport.json', 'w+') as f:
+            foo = {}
+            json.dump(foo, f)
 
 
 def _delete_event(name):
